@@ -1,0 +1,123 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nirvana Tracker</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+      <link href="{% static 'css/styles.css' %}" rel = 'stylesheet'>
+  </head>
+
+  <body>
+
+  <!-- navbar-->
+  <nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Nirvana Tracker</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="position: absolute ; right : 20px ; ">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/mood_table">Mood-Table</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/community">Community</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <!--Title-->
+  <div class = "text-center px-4 pt-5 my-5">
+       <h1 class = 'display-2 fw-bold' >{{ room.name }}</h1>
+        <p class="lead mb-4">Talk and be free</p>
+  </div>
+  <div class = 'lg:w-2/4 mx-4 lg:mx-auto p-4 bg-info rounded'>
+    <div class = "chat-messages space-y-3" id="chat-messages">
+        {% for message in messages%}
+          <div class = 'p-4 my-4 bg-secondary rounded'>
+            <p class="font-semibold"> {{ message.user.username}} </p>
+            <p> {{ message.content }} </p>
+          </div>
+        {% endfor %}
+    </div> 
+</div>
+<div class="lg:w-2/4 my-4 mt-6 mx-4 lg:mx-auto p-4 bg-white rounded">
+    <form method="post" action="." class="flex">
+      {% csrf_token %}
+        <input type="text" name="content" class="flex-1" placeholder="Your message.." id="chat-message-input">
+        <button
+        class = "px-5 py-3 rounded text-white bg-info"
+        id="chat-message-submit"
+        >Submit</button>
+</div>
+<br><br>
+{{ room.slug|json_script:"json-roomname"}}
+{{ request.user.username|json_script:"json-username"}}
+<script>
+  const roomName = JSON.parse(document.getElementById('json-roomname').textContent)
+  const userName = JSON.parse(document.getElementById('json-username').textContent)
+
+
+  const chatSocket = new WebSocket(
+    'ws://'
+    + window.location.host
+    +'/ws/'
+    + roomName
+    + '/'
+  );
+  chatSocket.onmessgae = function(e){
+    console.log('onmessage')
+
+    const data = JSON.parse(e.data);
+
+    if (data.message){
+      let html ="<div class = 'p-4 my-4 bg-secondary rounded'>";
+        html+='<p class="font-semibold">'+ data.username + '</p>';
+        html+='<p>' + data.message+'</p>';
+        html+='</div>';
+    
+      document.querySelector('#chat-message-submit').innerHTML += html;
+
+    }else{
+      alert('The message was empty!')
+    }
+  }
+
+  chatSocket.onclose = function(e){
+    console.log('onclose')
+
+  }
+
+  //
+
+  document.querySelector('#chat-message-submit').onclick = function(e){
+    e.prenventDefault();
+    const messageInputDom = document.querySelector('#chat-message-submit');
+    const message = messageInputDom.value;
+
+    chatSocket.send(JSON.stringnify({
+      'message':message,
+      'username': userName,
+      'room': roomName,
+    }));
+    messageInputDom.value = '';
+
+    return false   ; 
+  } 
+</script>
+</html>
