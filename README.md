@@ -18,10 +18,26 @@ We're also working on creating a community where you can talk to someone else, s
 * Jupyter Notebooks
 * Django
 * HTML
-*CSS
+* CSS
 * JavaScript
 
-*Emotion Classifier is used as the technology to detect your moods and feelings.
+* Emotion Classifier is used as the technology to detect your moods and feelings.
 
 ## Sneek- Peak of our website ##
+
+* Landing Page
+![image](https://user-images.githubusercontent.com/94671333/176989365-9f049588-3991-440c-90c6-4005bf3122fc.png)
+* Diary Page
+![image](https://user-images.githubusercontent.com/94671333/176989399-42c39d48-53ce-46f7-92be-185e09afca3b.png)
+![image](https://user-images.githubusercontent.com/94671333/176989422-6ad6fb79-ed41-4711-95fc-8df203eb5d9d.png)
+* Mood-Table page
+![image](https://user-images.githubusercontent.com/94671333/176989489-ea0ca892-5884-41fd-807a-09b9c0c1ca6b.png)
+![image](https://user-images.githubusercontent.com/94671333/176989500-b33a507f-e39f-4275-9705-915155523c51.png)
+![image](https://user-images.githubusercontent.com/94671333/176989512-8fac09e7-63b0-4619-bc87-ef576aa682ac.png)
+* Community page
+![image](https://user-images.githubusercontent.com/94671333/176989523-70128031-d8f4-48e2-af1b-d3680d77ed88.png)
+* Room page
+![image](https://user-images.githubusercontent.com/94671333/176989537-ba50ee0b-b847-48b8-b334-96be3c07e4ca.png)
+![image](https://user-images.githubusercontent.com/94671333/176989544-38dded79-9a26-4d41-a84c-617c19f497ee.png)
+
 
